@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile # تحديد مسار Dockerfile هنا
+    container_name: missdevloping # اسم مخصص لحاوية التطبيق في بيئة التطوير
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:latest
+    container_name: missdevlopingdb1 # اسم مخصص لحاوية قاعدة البيانات في بيئة التطوير
+    environment:
+      MYSQL_DATABASE: missdevlopuser
+      MYSQL_USER: missdevlop132
+      MYSQL_PASSWORD: sdgsdf123
+      MYSQL_ROOT_PASSWORD: sdgsdf123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: missdevlopingdb # اسم مخصص لحاوية phpMyAdmin في بيئة التطوير
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: sdgsdf123
+
+volumes:
+  db_data:
